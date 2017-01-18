@@ -297,7 +297,11 @@ if ( !function_exists( 'issuem_issue_taxonomy_edit_form_fields' ) )  {
 		
 		<tr class="form-field">
 		<th valign="top" scope="row"><?php _e( 'Cover Image', 'issuem' ); ?></th>
-		<td><input type="file" name="cover_image" id="cover_image" value="" /><?php echo $view_image . $remove_image; ?></td>
+		<td>
+        	<input id="cover_image" type="text" size="36" name="cover_image" value="<?php echo $issue_meta['cover_image']; ?>" />
+			<input id="upload_image_button" class="button" type="button" value="Upload Image" />
+			<?php echo $view_image . $remove_image; ?>
+        </td>
 		</tr>
 		
 		<?php
@@ -374,20 +378,9 @@ if ( !function_exists( 'save_issuem_issue_meta' ) ) {
 		
 		if ( !empty( $_POST['issue_order'] ) ) 
 			$issue_meta['issue_order'] = $_POST['issue_order'];
-		
-		if ( !empty( $_FILES['cover_image']['name'] ) ) {
 			
-			require_once(ABSPATH . 'wp-admin/includes/admin.php'); 
-			$id = media_handle_upload( 'cover_image', 0 ); //post id of Client Files page  
-			 
-			if ( is_wp_error($id) ) {  
-				$errors['upload_error'] = $id;  
-				$id = false;  
-			}
-			
-			$issue_meta['cover_image'] = $id;
-			
-		}
+		if ( !empty( $_POST['cover_image'] ) ) 
+			$issue_meta['cover_image'] = $_POST['cover_image'];
 		
 		if ( !empty( $_FILES['pdf_version']['name'] ) ) {
 			
